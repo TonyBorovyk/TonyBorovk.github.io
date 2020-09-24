@@ -5,11 +5,7 @@ var recordsArray = [];
 
 
 const  updateDate = ()=> {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
+    let date = new Date();let day = date.getDate();let month = date.getMonth() + 1;let hours = date.getHours();let minutes = date.getMinutes();
 
     return day + '.' + month + '.' + date.getFullYear() + ' ' + hours + ':' + minutes;
 }
@@ -40,11 +36,7 @@ function createrecord(x, y) {
 
 function newrecord() {
     let newrecord = {
-        id: generateID(),
-        name: '',
-        body: '',
-        date: updateDate(),
-        selected: true,
+        id: generateID(), name: '',  body: '', date: updateDate(), selected: true,
     }
     unselectCurrentrecord();
     recordsArray.unshift(newrecord);
@@ -58,12 +50,8 @@ function newrecord() {
 function recordDelete() {
     let selectedrecord = document.querySelector('.record-chosen');
     for (let i = 0; i < recordsArray.length; i++) {
-        if (selectedrecord.id === recordsArray[i].id) {
-            recordsArray.splice(i, 1);
-            document.querySelector('.record-list').removeChild(document.querySelector('.record-list').children[i]);
-            break;
-        }
-    }
+        if (selectedrecord.id === recordsArray[i].id) {recordsArray.splice(i, 1);
+            document.querySelector('.record-list').removeChild(document.querySelector('.record-list').children[i]);break;}}
 }
 
 
@@ -81,17 +69,12 @@ function deleterecord() {
 
 
 function editRecordName() {
-    if (recordsArray[0].selected === false) {
-        sortrecordMenu();
-    }
+    if (recordsArray[0].selected === false) {   sortrecordMenu();  }
     document.querySelector('.record-chosen').children[0].textContent = document.getElementById('record-name').value;
-    document.querySelector('.record-chosen').children[2].textContent = updateDate();
-}
+    document.querySelector('.record-chosen').children[2].textContent = updateDate();}
 
 function editRecordText() {
-    if (recordsArray[0].selected === false) {
-        sortrecordMenu();
-    }
+    if (recordsArray[0].selected === false) { sortrecordMenu(); }
     document.querySelector('.record-chosen').children[1].textContent = document.getElementById('record-text').value;
     document.querySelector('.record-chosen').children[2].textContent = updateDate();
 }
@@ -105,25 +88,18 @@ function unselectCurrentrecord() {
         chosenrecord.classList.remove('record-chosen');
     }
     for (let i = 0; i < recordsArray.length; i++) {
-        if (recordsArray[i].selected) {
-            recordsArray[i].selected = false;
-            break;
-        }
+        if (recordsArray[i].selected) {recordsArray[i].selected = false; break;}
     }
 }
 
 
 document.querySelector('.record-list').onclick = function (event) {
     let target;
-    if (event.target.tagName === 'UL') {
-        return;
-    }
+    if (event.target.tagName === 'UL') { return;}
     if (event.target.tagName != 'LI') {
         target = event.target.parentNode;
-    } else {
-        target = event.target;
-    }
-    unselectCurrentrecord();
+    } else {target = event.target;
+    }  unselectCurrentrecord();
     selectRecord(target);
 }
 
@@ -211,8 +187,7 @@ function createRec() {
                 let lastrecord = document.getElementById(recordsArray[i].id);
                 lastrecord.classList.remove('record-single');
                 lastrecord.classList.add('record-chosen', 'record-single');
-                recordsArray[i].selected = true;
-                document.getElementById('record-name').value = recordsArray[i].name;
+                recordsArray[i].selected = true; document.getElementById('record-name').value = recordsArray[i].name;
                 document.getElementById('record-text').value = recordsArray[i].body;
                 unlockInputs();
                 break;
@@ -227,8 +202,7 @@ function createRec() {
 window.onbeforeunload = () => {
     for (let i = 0; i < recordsArray.length; i++) {
         if (recordsArray[i].selected === true) {
-            recordsArray[i].name = document.getElementById('record-name').value;
-            recordsArray[i].body = document.getElementById('record-text').value;
+            recordsArray[i].name = document.getElementById('record-name').value; recordsArray[i].body = document.getElementById('record-text').value;
             recordsArray[i].date = document.querySelector('.record-chosen').children[2].textContent;
             break;
         }
@@ -241,11 +215,7 @@ window.onbeforeunload = () => {
 function setLSName() {
     for (let i = 0; i < recordsArray.length; i++) {
         if (recordsArray[i].selected === true) {
-            recordsArray[i].name = document.getElementById('record-name').value;
-            recordsArray[i].date = document.querySelector('.record-chosen').children[2].textContent;
-
-            break;
-        }
+            recordsArray[i].name = document.getElementById('record-name').value; recordsArray[i].date = document.querySelector('.record-chosen').children[2].textContent; break; }
     }
     localStorage.setItem('storedrecords', JSON.stringify(recordsArray));
 }
@@ -255,8 +225,7 @@ function setLSText() {
         if (recordsArray[i].selected === true) {
             recordsArray[i].body = document.getElementById('record-text').value;
             recordsArray[i].date = document.querySelector('.record-chosen').children[2].textContent;
-            break;
-        }
+            break; }
     }
     localStorage.setItem('storedrecords', JSON.stringify(recordsArray));
 }
