@@ -1,19 +1,15 @@
 document.getElementById('add-record').addEventListener('click', newrecord);
 document.getElementById('delete-record').addEventListener('click', deleterecord);
 
-var recordsArray = []; // Массив заміток
+var recordsArray = []; 
 
-// Оновлення дати
 const  generateDate = ()=> {
-    let date = new Date();
-    let day = date.getDate();
+    let hours = date.getHours();let minutes = date.getMinutes();
+    let date = new Date(); let day = date.getDate();
     let month = date.getMonth() + 1;
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-
-    return day + '.' + month + '.' + date.getFullYear() + ' ' + hours + ':' + minutes;
+    return day +'.'+month+'.'+date.getFullYear()+' '+hours+':'+minutes;
 }
-// Блокуємо ввод
+
 function lockInputs() {
     document.getElementById('record-name').disabled = true;
     document.getElementById('delete-record').disabled = true;
@@ -21,7 +17,6 @@ function lockInputs() {
     return true;
 }
 
-// Розблоковуємо ввод
 function unlockInputs() {
     document.getElementById('record-name').disabled = false;
     document.getElementById('delete-record').disabled = false;
@@ -29,20 +24,16 @@ function unlockInputs() {
     return true
 }
 
-
-//Создание записи
 function createrecord(x, y) {
     let recordName = document.createElement('p'); let recordText = document.createElement('p'); let recordDate = document.createElement('p'); 
     recordName.id = 'record-name-preview'; recordText.id = 'record-text-preview'; recordDate.id = 'record-date'; recordDate.textContent = x; let recordElement = document.createElement('li'); recordElement.classList.add('record-chosen', 'record-single'); recordElement.id = y; recordElement.appendChild(recordName); recordElement.appendChild(recordText); recordElement.appendChild(recordDate); document.querySelector('.record-list').insertBefore(recordElement, document.querySelector('.record-list').firstChild); document.getElementById('record-name').value = ''; document.getElementById('record-text').value = '';
 }
 
-
-// Добавление записей
 function newrecord() {
     let newrecord = {
-        id: generateID(),
         name: '',
         body: '',
+        id: generateID(),
         date: generateDate(),
         selected: true,
     }
@@ -54,7 +45,7 @@ function newrecord() {
     localStorage.setItem('storedrecords', JSON.stringify(recordsArray));
 }
 
-//Видалення замітки яку обрано
+
 function recordDelete() {
     let selectedrecord = document.querySelector('.record-chosen');
     for (let i = 0; i < recordsArray.length; i++) {
@@ -66,68 +57,60 @@ function recordDelete() {
     }
 }
 
-// Видалення з локал-сторадж
+
 function deleterecord() {
     recordDelete();
+    
     document.getElementById('record-name').value = '';
+    
     document.getElementById('record-text').value = '';
+    
     location.hash = '';
+    
     lockInputs();
+    
     localStorage.setItem('storedrecords', JSON.stringify(recordsArray));
 }
 
 
 
 
-// Редагування замітки
+
 function editRecordName() {
-    if (recordsArray[0].selected === false) {
-        sortrecordMenu();
-    }
-    document.querySelector('.record-chosen').children[0].textContent = document.getElementById('record-name').value;
-    document.querySelector('.record-chosen').children[2].textContent = updateDate();
+    if (recordsArray[0].selected === false) {sortrecordMenu(); }
+    document.querySelector('.record-chosen').children[0].textContent = document.getElementById('record-name').value; document.querySelector('.record-chosen').children[2].textContent = updateDate();
 }
-// Редактирование текста записи
+
 function editRecordText() {
-    if (recordsArray[0].selected === false) {
-        sortrecordMenu();
-    }
-    document.querySelector('.record-chosen').children[1].textContent = document.getElementById('record-text').value;
-    document.querySelector('.record-chosen').children[2].textContent = updateDate();
+    if (recordsArray[0].selected === false) { sortrecordMenu();
+    }document.querySelector('.record-chosen').children[1].textContent = document.getElementById('record-text').value; document.querySelector('.record-chosen').children[2].textContent = updateDate();
 }
 
 
 
-// Виділення замітки
+
 function unselectCurrentrecord() {
     let chosenrecord = document.querySelector('.record-chosen');
     if (chosenrecord != null) {
         chosenrecord.classList.remove('record-chosen');
     }
     for (let i = 0; i < recordsArray.length; i++) {
-        if (recordsArray[i].selected) {
-            recordsArray[i].selected = false;
-            break;
-        }
+        if (recordsArray[i].selected) {recordsArray[i].selected = false;break;}
     }
 }
 
-// Обираємо запис
+
 document.querySelector('.record-list').onclick = function (event) {
     let target;
-    if (event.target.tagName === 'UL') {
-        return;
-    }
+    if (event.target.tagName === 'UL') {return;}
     if (event.target.tagName != 'LI') {
         target = event.target.parentNode;
-    } else {
-        target = event.target;
-    }
+    } else { target = event.target;}
     unselectCurrentrecord();
     selectRecord(target);
 }
 
-//Обрана замітка
+
 function selectRecord(x) {
     let selectedrecord;
     for (let i = 0; i < recordsArray.length; i++) {
@@ -136,26 +119,22 @@ function selectRecord(x) {
             break;
         }
     }
-    x.classList.remove('record-single');
-    x.classList.add('record-chosen', 'record-single');
-    document.getElementById('record-name').value = selectedrecord.name;
-    document.getElementById('record-text').value = selectedrecord.body;
+    x.classList.remove('record-single'); x.classList.add('record-chosen', 'record-single');
+    document.getElementById('record-name').value = selectedrecord.name; document.getElementById('record-text').value = selectedrecord.body;
     selectedrecord.selected = true;
     location.hash = selectedrecord.id;
     unlockInputs();
 }
-// Генерація ідентифікатора
+
 function generateID() {
     return `url${((Math.random() * 200000)).toString()}`;
 }
-// Сортування
+
 function sortrecordMenu() {
     for (let i = 0; i < recordsArray.length; i++) {
         if (recordsArray[i].selected === true) {
             let tempArrayEl = recordsArray[i];
-            recordsArray.splice(i, 1);
-            recordsArray.unshift(tempArrayEl);
-            let temprecordEl = document.querySelector('.record-chosen');
+            recordsArray.splice(i, 1); recordsArray.unshift(tempArrayEl);let temprecordEl = document.querySelector('.record-chosen');
             document.querySelector('.record-list').removeChild(document.querySelector('.record-list').children[i]);
             document.querySelector('.record-list').insertBefore(temprecordEl, document.querySelector('.record-list').firstChild);
             break;
@@ -163,7 +142,7 @@ function sortrecordMenu() {
     }
 }
 
-// Зміна вмісту(хеша)
+
 window.addEventListener('hashchange', () => {
     for (let i = 0; i < recordsArray.length; i++) {
         if (location.hash === '#' + recordsArray[i].id) {
@@ -184,7 +163,7 @@ window.addEventListener('hashchange', () => {
     unselectCurrentrecord();
 })
 
-// Загрузити з локального сховища
+
 window.onload = () => {
     lockInputs();
     document.getElementById('record-name').value = '';
@@ -195,7 +174,7 @@ window.onload = () => {
     getData();
     createRec();
 }
-// Обираємо дані з локального сховища
+
 function getData() {
     recordsArray = JSON.parse(localStorage.getItem('storedrecords')); 
     for (let i = 0; i < recordsArray.length; i++) {
@@ -206,7 +185,7 @@ function getData() {
         recordElement.appendChild(recordName); recordElement.appendChild(recordText); recordElement.appendChild(recordDate); document.querySelector('.record-list').appendChild(recordElement);
     }
 }
-//Знаходимо запис по хешу
+
 function createRec() {
     if (location.hash != '') {
         let found;
@@ -228,7 +207,7 @@ function createRec() {
         }
     }
 }
-// Збереження в лок. сховищі
+
 window.onbeforeunload = () => {
     for (let i = 0; i < recordsArray.length; i++) {
         if (recordsArray[i].selected === true) {
@@ -243,7 +222,7 @@ window.onbeforeunload = () => {
 }
 
 
-// Збереження вмісту записа
+
 function setLSName() {
     for (let i = 0; i < recordsArray.length; i++) {
         if (recordsArray[i].selected === true) {
