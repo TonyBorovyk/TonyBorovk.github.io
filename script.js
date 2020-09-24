@@ -39,12 +39,7 @@ function createrecord(x, y) {
 
 // Добавление записей
 function newrecord() {
-    let newrecord = {
-        id: generateID(),
-        name: '',
-        body: '',
-        date: updateDate(),
-        selected: true,
+    let newrecord = {id: generateID(),name: '',body: '',date: updateDate(),selected: true,
     }
     unselectCurrentrecord();
     recordsArray.unshift(newrecord);
