@@ -4,7 +4,7 @@ document.getElementById('delete-record').addEventListener('click', deleterecord)
 var recordsArray = []; // Массив заміток
 
 // Оновлення дати
-const  updateDate = ()=> {
+const  generateDate = ()=> {
     let date = new Date();
     let day = date.getDate();
     let month = date.getMonth() + 1;
@@ -39,7 +39,12 @@ function createrecord(x, y) {
 
 // Добавление записей
 function newrecord() {
-    let newrecord = {id: generateID(),name: '',body: '',date: updateDate(),selected: true,
+    let newrecord = {
+        id: generateID(),
+        name: '',
+        body: '',
+        date: generateDate(),
+        selected: true,
     }
     unselectCurrentrecord();
     recordsArray.unshift(newrecord);
@@ -192,8 +197,13 @@ window.onload = () => {
 }
 // Обираємо дані з локального сховища
 function getData() {
-    recordsArray = JSON.parse(localStorage.getItem('storedrecords')); for (let i = 0; i < recordsArray.length; i++) {
-        let recordName = document.createElement('p'); let recordText = document.createElement('p'); let recordDate = document.createElement('p'); recordName.id = 'record-name-preview'; recordText.id = 'record-text-preview'; recordDate.id = 'record-date'; recordName.textContent = recordsArray[i].name; recordText.textContent = recordsArray[i].body; recordDate.textContent = recordsArray[i].date; let recordElement = document.createElement('li'); recordElement.classList.add('record-single'); recordElement.id = recordsArray[i].id; recordElement.appendChild(recordName); recordElement.appendChild(recordText); recordElement.appendChild(recordDate); document.querySelector('.record-list').appendChild(recordElement);
+    recordsArray = JSON.parse(localStorage.getItem('storedrecords')); 
+    for (let i = 0; i < recordsArray.length; i++) {
+        let recordName = document.createElement('p'); let recordText = document.createElement('p'); let recordDate = document.createElement('p'); 
+        recordName.id = 'record-name-preview'; recordText.id = 'record-text-preview'; recordDate.id = 'record-date'; 
+        recordName.textContent = recordsArray[i].name; recordText.textContent = recordsArray[i].body; recordDate.textContent = recordsArray[i].date; 
+        let recordElement = document.createElement('li'); recordElement.classList.add('record-single'); recordElement.id = recordsArray[i].id; 
+        recordElement.appendChild(recordName); recordElement.appendChild(recordText); recordElement.appendChild(recordDate); document.querySelector('.record-list').appendChild(recordElement);
     }
 }
 //Знаходимо запис по хешу
@@ -261,3 +271,4 @@ document.getElementById('record-name').oninput = editRecordName;
 document.getElementById('record-text').oninput = editRecordText;
 document.getElementById('record-name').onchange = setLSName;
 document.getElementById('record-text').onchange = setLSText;
+
